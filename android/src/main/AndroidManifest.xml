@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.divamobilezebrascanner">
 
+    <uses-library android:name="com.symbol.emdk"/>
+
 </manifest>
