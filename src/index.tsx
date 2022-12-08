@@ -11,6 +11,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
+let activeBarcodeListener: EmitterSubscription;
+
 const DivaMobileZebraScanner = NativeModules.DivaMobileZebraScanner
   ? NativeModules.DivaMobileZebraScanner
   : new Proxy(
@@ -24,10 +26,7 @@ const DivaMobileZebraScanner = NativeModules.DivaMobileZebraScanner
 
 DivaMobileZebraScanner.allowedEvents = [
   DivaMobileZebraScanner.BARCODE_READ_SUCCESS,
-  DivaMobileZebraScanner.BARCODE_READ_FAIL,
 ];
-
-let listeners = new Map<string, EmitterSubscription>();
 
 /**
  * Listen for available events
@@ -38,7 +37,9 @@ DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
   if (!DivaMobileZebraScanner.allowedEvents.includes(eventName)) {
     throw new Error(`Event name ${eventName} is not a supported event.`);
   }
-  listeners.set(eventName, DeviceEventEmitter.addListener(eventName, handler));
+  if (!activeBarcodeListener) {
+    activeBarcodeListener = DeviceEventEmitter.addListener(eventName, handler);
+  }
 };
 
 /**
@@ -46,16 +47,8 @@ DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
  * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
  * @param  {Function} handler Event handler
  */
-DivaMobileZebraScanner.off = (eventName: any) => {
-  if (!DivaMobileZebraScanner.allowedEvents.includes(eventName)) {
-    throw new Error(`Event name ${eventName} is not a supported event.`);
-  }
-
-  const eventSubscription = listeners.get(eventName);
-
-  if (eventSubscription) {
-    eventSubscription.remove();
-  }
+DivaMobileZebraScanner.off = () => {
+  activeBarcodeListener.remove();
 };
 
 module.exports = DivaMobileZebraScanner;
