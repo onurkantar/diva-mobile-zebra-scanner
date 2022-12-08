@@ -34,19 +34,19 @@ let listeners = new Map<string, EmitterSubscription>();
  * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
  * @param  {Function} handler Event handler
  */
-export function on(eventName: any, handler: any) {
+DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
   if (!allowedEvents.includes(eventName)) {
     throw new Error(`Event name ${eventName} is not a supported event.`);
   }
   listeners.set(eventName, DeviceEventEmitter.addListener(eventName, handler));
-}
+};
 
 /**
  * Stop listening for event
  * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
  * @param  {Function} handler Event handler
  */
-export function off(eventName: any) {
+DivaMobileZebraScanner.off = (eventName: any) => {
   if (!allowedEvents.includes(eventName)) {
     throw new Error(`Event name ${eventName} is not a supported event.`);
   }
@@ -56,4 +56,4 @@ export function off(eventName: any) {
   if (eventSubscription) {
     eventSubscription.remove();
   }
-}
+};
