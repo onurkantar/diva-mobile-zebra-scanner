@@ -1,6 +1,15 @@
 package com.divamobilezebrascanner;
 
 import androidx.annotation.NonNull;
+import javax.annotation.Nullable;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import android.os.Build;
+import android.util.Log;
 
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -156,7 +165,7 @@ public class DivaMobileZebraScannerModule extends ReactContextBaseJavaModule imp
      */
     private void sendEvent(String eventName, @Nullable WritableMap params) {
         if (mReactContext.hasActiveCatalystInstance()) {
-            if (D) Log.d(TAG, "Sending event: " + eventName);
+            if (D) Log.d(NAME, "Sending event: " + eventName);
             mReactContext
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
@@ -306,6 +315,6 @@ public class DivaMobileZebraScannerModule extends ReactContextBaseJavaModule imp
     }
 
     private void updateStatus(final String status) {
-        if (D) Log.d(TAG, "ZEBRASCANNER - Status: " + status);
+        if (D) Log.d(NAME, "ZEBRASCANNER - Status: " + status);
     }
 }
