@@ -8,16 +8,6 @@ diva mobile zebra scanner library
 npm install diva-mobile-zebra-scanner
 ```
 
-## Usage
-
-```js
-import { multiply } from 'diva-mobile-zebra-scanner';
-
-// ...
-
-const result = await multiply(3, 7);
-```
-
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
