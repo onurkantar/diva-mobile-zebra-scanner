@@ -53,8 +53,13 @@ android {
 }
 
 repositories {
-  mavenCentral()
-  google()
+    mavenCentral()
+    maven {
+        // All of React Native (package.jsJS, Obj-C sources, Android binaries) is installed from npm
+        url "$rootDir/../node_modules/react-native/android"
+    }
+    google()
+    jcenter()
 }
 
 
