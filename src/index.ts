@@ -49,8 +49,4 @@ DivaMobileZebraScanner.off = (subscription: EmitterSubscription) => {
   }
 };
 
-DivaMobileZebraScanner.removeListener = (eventName: any, handler: any) => {
-  DeviceEventEmitter.removeListener(eventName, handler);
-};
-
 module.exports = DivaMobileZebraScanner;
