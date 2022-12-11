@@ -217,10 +217,6 @@ public class DivaMobileZebraScannerModule extends ReactContextBaseJavaModule imp
     @Override
     public void onOpened(EMDKManager emdkManager) {
         this.emdkManager = emdkManager;
-        // Acquire the barcode manager resources
-        initBarcodeManager();
-        // Enumerate scanner devices
-        enumerateScannerDevices();
     }
 
     @Override

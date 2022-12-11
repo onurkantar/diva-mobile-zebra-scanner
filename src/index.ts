@@ -40,8 +40,7 @@ DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
 
 /**
  * Stop listening for event
- * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
- * @param  {Function} handler Event handler
+ * @param  {EmitterSubscription} subscription that is to be closed
  */
 DivaMobileZebraScanner.off = (subscription: EmitterSubscription) => {
   if (subscription) {
