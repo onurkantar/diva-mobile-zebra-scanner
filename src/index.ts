@@ -6,12 +6,10 @@ import {
 } from 'react-native';
 
 const LINKING_ERROR =
-  `The package 'diva-mobile-zebra-scanner' doesn't seem to be linked. Make sure: \n\n` +
+  'The package "diva-mobile-zebra-scanner" doesn\'t seem to be linked. Make sure: \n\n' +
   Platform.select({ ios: "- You have run 'pod install'\n", default: '' }) +
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
-
-let activeBarcodeListener: EmitterSubscription;
 
 const DivaMobileZebraScanner = NativeModules.DivaMobileZebraScanner
   ? NativeModules.DivaMobileZebraScanner
@@ -37,9 +35,7 @@ DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
   if (!DivaMobileZebraScanner.allowedEvents.includes(eventName)) {
     throw new Error(`Event name ${eventName} is not a supported event.`);
   }
-  if (!activeBarcodeListener) {
-    activeBarcodeListener = DeviceEventEmitter.addListener(eventName, handler);
-  }
+  return DeviceEventEmitter.addListener(eventName, handler);
 };
 
 /**
@@ -47,8 +43,14 @@ DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
  * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
  * @param  {Function} handler Event handler
  */
-DivaMobileZebraScanner.off = () => {
-  activeBarcodeListener.remove();
+DivaMobileZebraScanner.off = (subscription: EmitterSubscription) => {
+  if (subscription) {
+    subscription.remove();
+  }
+};
+
+DivaMobileZebraScanner.removeListener = (eventName: any, handler: any) => {
+  DeviceEventEmitter.removeListener(eventName, handler);
 };
 
 module.exports = DivaMobileZebraScanner;
