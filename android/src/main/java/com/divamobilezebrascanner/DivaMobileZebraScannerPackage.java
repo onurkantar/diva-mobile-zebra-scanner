@@ -22,8 +22,9 @@ public class DivaMobileZebraScannerPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new DivaMobileZebraScannerModule(reactContext));
-        
+        if (android.os.Build.MANUFACTURER.contains("Zebra Technologies")) {
+            modules.add(new DivaMobileZebraScannerModule(reactContext));
+        }
         return modules;
     }
 
