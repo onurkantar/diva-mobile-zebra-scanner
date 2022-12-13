@@ -34,16 +34,13 @@ DivaMobileZebraScanner.startReader = (handler: (data: any) => void) => {
   });
 };
 
-DivaMobileZebraScanner.stopReader = (subscription: EmitterSubscription) => {
-  // Check if the subscription is valid
-  if (!subscription) {
-    throw new Error(`Invalid subscription: subscription is null or undefined`);
-  }
-
+DivaMobileZebraScanner.stopReader = () => {
   // Finalize the Zebra scanner
   return DivaMobileZebraScanner.finalize().then(() => {
     // Unsubscribe from the event
-    return subscription.remove();
+    return DeviceEventEmitter.removeAllListeners(
+      DivaMobileZebraScanner.BARCODE_READ_SUCCESS
+    );
   });
 };
 
