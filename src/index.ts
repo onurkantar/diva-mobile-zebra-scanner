@@ -1,9 +1,4 @@
-import {
-  DeviceEventEmitter,
-  EmitterSubscription,
-  NativeModules,
-  Platform,
-} from 'react-native';
+import { DeviceEventEmitter, NativeModules, Platform } from 'react-native';
 
 const LINKING_ERROR =
   'The package "diva-mobile-zebra-scanner" doesn\'t seem to be linked. Make sure: \n\n' +
