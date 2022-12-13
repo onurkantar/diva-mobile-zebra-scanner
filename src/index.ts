@@ -16,27 +16,38 @@ const DivaMobileZebraScanner = NativeModules.DivaMobileZebraScanner
         },
       }
     );
+let isListenerAssigned: boolean;
 
 DivaMobileZebraScanner.startReader = (handler: (data: any) => void) => {
-  // Initialize the Zebra scanner
-  return DivaMobileZebraScanner.init().then(() => {
-    // Subscribe to the BARCODE_READ_SUCCESS event
-    return DeviceEventEmitter.addListener(
-      DivaMobileZebraScanner.BARCODE_READ_SUCCESS,
-      // Pass the event data to the specified handler function
-      (data) => handler(data)
-    );
-  });
+  if (!isListenerAssigned) {
+    // Initialize the Zebra scanner
+    return DivaMobileZebraScanner.init().then(() => {
+      // Subscribe to the BARCODE_READ_SUCCESS event
+      if (
+        DeviceEventEmitter.addListener(
+          DivaMobileZebraScanner.BARCODE_READ_SUCCESS,
+          // Pass the event data to the specified handler function
+          (data) => handler(data)
+        )
+      ) {
+        isListenerAssigned = true;
+      }
+    });
+  }
+  return;
 };
 
 DivaMobileZebraScanner.stopReader = () => {
-  // Finalize the Zebra scanner
-  return DivaMobileZebraScanner.finalize().then(() => {
-    // Unsubscribe from the event
-    return DeviceEventEmitter.removeAllListeners(
-      DivaMobileZebraScanner.BARCODE_READ_SUCCESS
-    );
-  });
+  if (isListenerAssigned) {
+    // Finalize the Zebra scanner
+    return DivaMobileZebraScanner.finalize().then(() => {
+      // Unsubscribe from the event
+      DeviceEventEmitter.removeAllListeners(
+        DivaMobileZebraScanner.BARCODE_READ_SUCCESS
+      );
+      isListenerAssigned = false;
+    });
+  }
 };
 
 module.exports = DivaMobileZebraScanner;
