@@ -22,30 +22,29 @@ const DivaMobileZebraScanner = NativeModules.DivaMobileZebraScanner
       }
     );
 
-DivaMobileZebraScanner.allowedEvents = [
-  DivaMobileZebraScanner.BARCODE_READ_SUCCESS,
-];
-
 /**
  * Listen for available events
- * @param  {String} eventName Name of event one of barcodeReadSuccess, barcodeReadFail
  * @param  {Function} handler Event handler
  */
-DivaMobileZebraScanner.on = (eventName: any, handler: any) => {
-  if (!DivaMobileZebraScanner.allowedEvents.includes(eventName)) {
-    throw new Error(`Event name ${eventName} is not a supported event.`);
-  }
-  return DeviceEventEmitter.addListener(eventName, handler);
+DivaMobileZebraScanner.startReader = (handler: any) => {
+  return DivaMobileZebraScanner.init().then(() => {
+    return DeviceEventEmitter.addListener(
+      DivaMobileZebraScanner.BARCODE_READ_SUCCESS,
+      handler
+    );
+  });
 };
 
 /**
  * Stop listening for event
  * @param  {EmitterSubscription} subscription that is to be closed
  */
-DivaMobileZebraScanner.off = (subscription: EmitterSubscription) => {
-  if (subscription) {
-    subscription.remove();
+DivaMobileZebraScanner.stopReader = (subscription: EmitterSubscription) => {
+  if (!subscription) {
+    throw new Error(`There is no subscription`);
   }
+
+  return DivaMobileZebraScanner.finalize().then(() => subscription.remove());
 };
 
 module.exports = DivaMobileZebraScanner;

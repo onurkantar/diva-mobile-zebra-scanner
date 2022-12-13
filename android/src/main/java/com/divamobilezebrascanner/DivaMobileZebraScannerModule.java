@@ -186,7 +186,7 @@ public class DivaMobileZebraScannerModule extends ReactContextBaseJavaModule imp
     /** Methods Available from JS **/
     /*******************************/
     @ReactMethod
-    public void startReader(final Promise promise) {
+    public void init(final Promise promise) {
         updateStatus("EMDK open success!");
         this.emdkManager = emdkManager;
         // Acquire the barcode manager resources
@@ -197,7 +197,7 @@ public class DivaMobileZebraScannerModule extends ReactContextBaseJavaModule imp
     }
 
     @ReactMethod
-    public void stopReader(Promise promise) {
+    public void finalize(Promise promise) {
         // The application is in background
         // Release the barcode manager resources
         deInitScanner();
